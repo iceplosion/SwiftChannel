@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <string_view>
 #include <chrono>
+#include <atomic>
 
 namespace swiftchannel {
 
@@ -38,12 +39,12 @@ struct SharedMemoryHeader {
     uint32_t magic;                 // Magic number
     uint32_t version;               // Protocol version
     uint64_t ring_buffer_size;      // Size of ring buffer in bytes
-    uint64_t write_index;           // Write position (atomic)
-    uint64_t read_index;            // Read position (atomic)
+    std::atomic<uint64_t> write_index;  // Write position (atomic)
+    std::atomic<uint64_t> read_index;   // Read position (atomic)
     uint32_t sender_pid;            // Sender process ID
     uint32_t receiver_pid;          // Receiver process ID
     uint64_t flags;                 // Configuration flags
-    uint64_t reserved[8];           // Reserved for future use
+    uint64_t reserved[10];          // Reserved for future use (80 bytes)
 
     static constexpr uint32_t MAGIC = 0x53574946;  // "SWIF"
 };

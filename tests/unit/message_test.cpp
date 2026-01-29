@@ -22,7 +22,7 @@ int main() {
         assert(typed_msg.data().id == 42);
         assert(typed_msg.data().value == 3.14);
 
-        std::cout << "  ✓ Typed message test passed\n";
+        std::cout << "  [PASS] Typed message test passed\n";
     }
 
     // Test 2: Dynamic message
@@ -38,7 +38,7 @@ int main() {
         assert(data[0] == 100);
         assert(data[1] == 200);
 
-        std::cout << "  ✓ Dynamic message test passed\n";
+        std::cout << "  [PASS] Dynamic message test passed\n";
     }
 
     // Test 3: Dynamic message from value
@@ -51,8 +51,9 @@ int main() {
         const TestMessage* retrieved = static_cast<const TestMessage*>(dyn_msg.data());
         assert(retrieved->id == 99);
         assert(retrieved->value == 2.71);
+        (void)retrieved; // Mark as used
 
-        std::cout << "  ✓ Dynamic message from value test passed\n";
+        std::cout << "  [PASS] Dynamic message from value test passed\n";
     }
 
     std::cout << "All message tests passed!\n";

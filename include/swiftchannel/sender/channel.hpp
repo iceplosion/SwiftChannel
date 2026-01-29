@@ -56,8 +56,6 @@ public:
     }
 
 private:
-    class SharedMemory;  // Forward declaration
-
     explicit Channel(std::string name, ChannelConfig config,
                     void* shared_memory, size_t total_size,
                     void* platform_handle) noexcept;

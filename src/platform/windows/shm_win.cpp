@@ -7,16 +7,40 @@
 #include "swiftchannel/sender/channel.hpp"
 #include "swiftchannel/common/alignment.hpp"
 
-#include <codecvt>
-#include <locale>
-
 namespace swiftchannel::platform {
 
 std::wstring PlatformWin::to_shared_memory_name(const std::string& channel_name) {
-    // Convert UTF-8 to UTF-16 and add prefix
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring wide_name = L"Local\\SwiftChannel_" + converter.from_bytes(channel_name);
-    return wide_name;
+    // Convert UTF-8 to UTF-16 using Windows API
+    if (channel_name.empty()) {
+        return L"Local\\SwiftChannel_";
+    }
+
+    // Calculate required buffer size
+    int wide_size = ::MultiByteToWideChar(
+        CP_UTF8,
+        0,
+        channel_name.c_str(),
+        static_cast<int>(channel_name.length()),
+        nullptr,
+        0
+    );
+
+    if (wide_size == 0) {
+        return L"Local\\SwiftChannel_";
+    }
+
+    // Allocate buffer and convert
+    std::wstring wide_channel_name(wide_size, L'\0');
+    ::MultiByteToWideChar(
+        CP_UTF8,
+        0,
+        channel_name.c_str(),
+        static_cast<int>(channel_name.length()),
+        &wide_channel_name[0],
+        wide_size
+    );
+
+    return L"Local\\SwiftChannel_" + wide_channel_name;
 }
 
 ErrorCode PlatformWin::get_last_error() {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "swiftchannel/common/types.hpp"
+#include "swiftchannel/common/error.hpp"
 
 #ifdef _WIN32
 

@@ -31,6 +31,7 @@ int main() {
         receiver_ready.store(true);
 
         auto handler = [&](const void* data, size_t size) {
+            (void)size; // Mark as used
             const TestData* msg = static_cast<const TestData*>(data);
             std::cout << "  Received message #" << msg->sequence
                      << " with payload: " << msg->payload << "\n";
@@ -38,7 +39,8 @@ int main() {
         };
 
         // Run for a short time
-        receiver.start_async(handler);
+        auto start_result = receiver.start_async(handler);
+        (void)start_result; // Mark as used
         std::this_thread::sleep_for(std::chrono::seconds(2));
         receiver.stop();
     });
@@ -74,6 +76,7 @@ int main() {
                 std::cerr << "  Failed to send message #" << i
                          << " error: " << static_cast<int>(result.error()) << "\n";
             }
+            (void)result; // Mark as used
 
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }

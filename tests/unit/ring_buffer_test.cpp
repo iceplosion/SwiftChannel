@@ -28,6 +28,7 @@ int main() {
 
         bool write_result = rb.try_write(test_data, data_len, header);
         assert(write_result && "Write should succeed");
+        (void)write_result; // Mark as used
 
         // Read it back
         char read_buffer[256];
@@ -37,8 +38,9 @@ int main() {
         assert(read_result && "Read should succeed");
         assert(read_size == data_len && "Size should match");
         assert(strcmp(read_buffer, test_data) == 0 && "Data should match");
+        (void)read_result; // Mark as used
 
-        std::cout << "  ✓ Basic write/read test passed\n";
+        std::cout << "  [PASS] Basic write/read test passed\n";
     }
 
     // Test 2: Buffer full detection
@@ -64,7 +66,7 @@ int main() {
         }
 
         assert(write_count > 0 && "Should be able to write at least once");
-        std::cout << "  ✓ Buffer full detection test passed (wrote " << write_count << " messages)\n";
+        std::cout << "  [PASS] Buffer full detection test passed (wrote " << write_count << " messages)\n";
     }
 
     std::cout << "All ring buffer tests passed!\n";

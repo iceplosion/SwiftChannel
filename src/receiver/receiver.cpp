@@ -62,7 +62,7 @@ public:
         }
 
         worker_thread_ = std::thread([this, handler = std::move(handler)]() {
-            this->start(handler);
+            [[maybe_unused]] auto result = this->start(handler);
         });
 
         return Result<void>();
